@@ -60,7 +60,7 @@ export function runDebug() {
 
         if (window.__vconsole_local_chii__) {
 
-          window.__vconsole_local_chii__.register("modal");
+          window.__vconsole_local_chii__.open();
           vConsole.hide();
         }
       },
