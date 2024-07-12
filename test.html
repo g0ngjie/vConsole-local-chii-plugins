@@ -1,18 +1,54 @@
-<div style="gap: 20px; display: flex; flex-direction: column">
+<div
+  style="
+    width: 100%;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #333;
+    font-size: 17px;
+  "
+>
   <h1 style="margin-top: 100px">打开设置面板添加本地调试URL</h1>
-  <ol>
-    <li>
-      确保本地已经启动<b>chii</b>,以8080端口为例。&nbsp;
-      <p style="background-color: black; color: #fff; padding: 10px">
+  <ul
+    style="
+      margin-top: 30px;
+      line-height: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    "
+  >
+    <li style="width: 100%; text-align: start">
+      1. 确保本地已经启动<b>chii</b>【以8080端口为例】&nbsp;
+      <p
+        style="
+          background-color: #2b2d39;
+          color: #81d1e0;
+          padding: 5px 10px;
+          border-radius: 3px;
+          text-align: start;
+        "
+      >
         $ chii start -p 8080
       </p>
     </li>
-    <li>打开IP设置本地IP地址和端口号</li>
-    <li>
-      本地打开<b>chii</b>操作面板&nbsp;
-      <p style="background-color: black; color: #fff; padding: 10px">
+    <li style="text-align: start">
+      2. 打开 <b>打开设置面板</b> 调整本地IP地址【必须用同一网段的IP】
+    </li>
+    <li style="width: 100%; text-align: start">
+      3. 浏览器访问 <b>chii</b> 操作面板&nbsp;
+      <p
+        style="
+          background-color: #2b2d39;
+          color: #81d1e0;
+          padding: 5px 10px;
+          border-radius: 3px;
+          text-align: start;
+        "
+      >
         $ http://localhost:8080
       </p>
     </li>
-  </ol>
+  </ul>
 </div>
