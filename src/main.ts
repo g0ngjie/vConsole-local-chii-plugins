@@ -1,6 +1,7 @@
 import { registerEl } from "./utils/register";
 import Modal from "./modal/index";
 // import Test from "./test/index";
+import "./autoexec"
 
 const ComponentMap = {
     modal: Modal,

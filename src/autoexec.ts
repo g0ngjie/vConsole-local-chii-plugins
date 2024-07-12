@@ -1,22 +1,30 @@
+// @ts-nocheck
 
-export function runDebug(vConsole) {
+const CDN_URL = "http://10.49.65.11:8889/localchii.iife.js"
+// const CDN_URL = ""
 
+export function runDebug() {
   const localChii = new VConsole.VConsolePlugin("local_chii", "Local Chii");
+
   localChii.on("init", () => {
     const componentContainer = document.createElement("div");
     componentContainer.id = "__vConsole-local-chii-plugins-container__";
     document.body.appendChild(componentContainer);
     const script = document.createElement("script");
-    script.src = `http://10.49.65.11:8888/index.iife.js`;
+    script.src = CDN_URL;
     document.body.appendChild(script);
     const localUrl = localStorage.getItem("localchiiurl");
     const localPort = localStorage.getItem("localchiiport");
+
     if (localUrl && localPort) {
-      const script = document.createElement("script");
-      script.src = `http://${localUrl}:${localPort}/target.js`;
-      document.body.appendChild(script);
+      if (!['127.0.0.1', 'localhost'].includes(localUrl)) {
+        const script = document.createElement("script");
+        script.src = `http://${localUrl}:${localPort}/target.js`;
+        document.body.appendChild(script);
+      }
     }
   });
+
 
   localChii.on("renderTab", (callback) => {
     const html = `<div style="gap: 20px; display: flex; flex-direction: column">
@@ -41,11 +49,12 @@ export function runDebug(vConsole) {
 `
     callback(html)
   });
-  vConsole.addPlugin(localChii);
 
   localChii.on("addTool", function (callback) {
+    console.log("[debug]22:", 22)
     const button = {
       name: "打开设置面板",
+
 
       onClick: function (event) {
 
@@ -58,4 +67,8 @@ export function runDebug(vConsole) {
     };
     callback([button]);
   });
+
+  vConsole.addPlugin(localChii);
 }
+
+setTimeout(() => runDebug(), 500);
