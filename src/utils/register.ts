@@ -6,11 +6,7 @@ const ShellComponentContainer = '__vConsole-local-chii-plugins-container__'
 let swapApp: App | null = null
 
 export function registerEl(target: Component) {
-    if (swapApp) {
-        swapApp.unmount()
-        swapApp = null;
-        return;
-    }
+    if (swapApp) swapApp.unmount()
     swapApp = createApp(target)
     swapApp.mount(`#${ShellComponentContainer}`)
 }
