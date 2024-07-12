@@ -62,7 +62,7 @@ export function runDebug() {
     if (localUrl && localPort) {
       if (!['127.0.0.1', 'localhost'].includes(localUrl)) {
         const script = document.createElement("script");
-        script.src = `http://${localUrl}:${localPort}/target.js`;
+        script.src = `//${localUrl}:${localPort}/target.js`;
         document.body.appendChild(script);
       }
     }
