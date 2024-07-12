@@ -1,8 +1,5 @@
 // @ts-nocheck
 
-const CDN_URL = "http://10.49.65.11:8889/localchii.iife.js"
-// const CDN_URL = ""
-
 const template = `
 <style>
   .container {
@@ -59,9 +56,6 @@ export function runDebug() {
     const componentContainer = document.createElement("div");
     componentContainer.id = "__vConsole-local-chii-plugins-container__";
     document.body.appendChild(componentContainer);
-    const script = document.createElement("script");
-    script.src = CDN_URL;
-    document.body.appendChild(script);
     const localUrl = localStorage.getItem("localchiiurl");
     const localPort = localStorage.getItem("localchiiport");
 
