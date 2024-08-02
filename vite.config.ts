@@ -17,9 +17,9 @@ export default defineConfig(({ mode }) => {
       minify: 'terser',
       lib: {
         entry: './src/main.ts',
-        name: '__vconsole_local_chii__',
+        name: '_debug_chii__',
         formats: ['iife'],
-        fileName: 'localchii' + dayjs().format("YY_MD_hm")
+        fileName: 'debugchii' + dayjs().format("YY_MD_hm")
       },
     },
     define: {

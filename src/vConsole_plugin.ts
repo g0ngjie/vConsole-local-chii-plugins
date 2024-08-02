@@ -54,7 +54,7 @@ export function runDebug() {
 
   localChii.on("init", () => {
     const componentContainer = document.createElement("div");
-    componentContainer.id = "__vConsole-local-chii-plugins-container__";
+    componentContainer.id = "__debug_remote_chii_container____";
     document.body.appendChild(componentContainer);
     const localUrl = localStorage.getItem("localchiiurl");
     const localPort = localStorage.getItem("localchiiport");
@@ -82,9 +82,9 @@ export function runDebug() {
 
       onClick: function (event) {
 
-        if (window.__vconsole_local_chii__) {
+        if (window._debug_chii__) {
 
-          window.__vconsole_local_chii__.open();
+          window._debug_chii__.open();
           vConsole.hide();
         }
       },

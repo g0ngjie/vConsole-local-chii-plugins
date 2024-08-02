@@ -1,34 +1,29 @@
 <script setup lang="ts">
-import { NModal } from "naive-ui";
-import { NConfigProvider } from "naive-ui";
-import { onMounted, ref } from "vue";
-import { useTheme, useThemeOverrides } from "./hooks";
-import IpSet from "./ipset.vue";
+import { computed, onMounted, ref } from "vue";
 
 const showModal = ref(false);
 
-// 主题
-const theme = useTheme();
-// ui样式覆盖
-const themeOverrides = useThemeOverrides();
+const cacheUrl = "CHII_CACHE_URL";
+
+const domain = computed({
+  get() {
+    return localStorage.getItem(cacheUrl) || "https://";
+  },
+  set(val) {
+    localStorage.setItem(cacheUrl, val);
+  }
+});
 
 onMounted(() => {
   showModal.value = true;
 });
+
+const handleSubmit = () => location.reload();
 </script>
 
 <template>
-  <NConfigProvider :theme="theme" :theme-overrides="themeOverrides">
-    <NModal
-      v-model:show="showModal"
-      title="IP 设置"
-      style="width: 90%;"
-      :maskClosable="false"
-      size="small"
-      preset="card"
-      :zIndex="999999"
-    >
-      <IpSet />
-    </NModal>
-  </NConfigProvider>
+  <div style="position: absolute; z-index: 999999; top: 100px; left: 10px;">
+    <input placeholder="添加chii代理地址" style="width: 300px;" type="text" v-model="domain" />
+    <button @click="handleSubmit">确认</button>
+  </div>
 </template>
