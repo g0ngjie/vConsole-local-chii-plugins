@@ -16,7 +16,7 @@
     "skipLibCheck": true,
     "noEmit": true,
     "types": [
-      "naive-ui/volar"
+      // "naive-ui/volar"
     ],
     "baseUrl": ".",
     "paths": {
