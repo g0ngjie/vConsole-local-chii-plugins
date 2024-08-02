@@ -22,8 +22,15 @@ const handleSubmit = () => location.reload();
 </script>
 
 <template>
-  <div style="position: absolute; z-index: 999999; top: 100px; left: 10px;">
-    <input placeholder="添加chii代理地址" style="width: 300px;" type="text" v-model="domain" />
+  <div
+    style="position:absolute;z-index:999999;top:100px;left:10px;width:400px;height:300px;background:gray;display:flex;justify-content:center;align-items:center;"
+  >
+    <input
+      placeholder="添加chii代理地址"
+      style="width:200px;height:25px;padding-left:10px;"
+      type="text"
+      v-model="domain"
+    />
     <button @click="handleSubmit">确认</button>
   </div>
 </template>
