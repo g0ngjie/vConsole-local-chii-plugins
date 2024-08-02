@@ -1,62 +1,63 @@
-import Modal from "./modal/index";
+// @ts-nocheck
 
-import { createApp } from 'vue'
-import type { App } from 'vue'
+const template = `
+ <div
+    style="width:100%;height:300px;background:gray;display:flex;justify-content:center;align-items:center;"
+  >
+  <input
+      placeholder="添加chii代理地址"
+      style="width:200px;height:25px;padding-left:10px;"
+      type="text"
+      id="__remote_cache_url_input_chii__"
+    />
+</div>
 
-const ShellComponentContainer = '__debug_remote_chii_container____'
+`
 
-let swapApp: App | null = null
+export function runDebug() {
+    const debugChii = new VConsole.VConsolePlugin("debug_chii", "DebugChii");
 
-export function open() {
-    if (swapApp) swapApp.unmount()
-    swapApp = createApp(Modal)
-    swapApp.mount(`#${ShellComponentContainer}`)
-}
+    debugChii.on("init", () => {
+        const domain = localStorage.getItem("CHII_CACHE_URL");
 
-export function destroy() {
-    if (swapApp) swapApp.unmount()
-}
-
-
-const componentContainer = document.createElement("div");
-componentContainer.id = "__debug_remote_chii_container____";
-document.body.appendChild(componentContainer);
-
-const domain = localStorage.getItem("CHII_CACHE_URL");
-
-if (domain) {
-    const script = document.createElement("script");
-    script.src = `${domain}/target.js`;
-    document.body.appendChild(script);
-}
-
-const touchCount: number = 6
-
-const _window: any = window
-let i = 0
-let vTimer: any
-document?.addEventListener('touchstart', e => {
-    i++
-    if (e.touches.length === touchCount && i >= touchCount) {
-        i = 0
-        clearTimeout(vTimer)
-        vTimer = ''
-        if (document.querySelector(ShellComponentContainer)) {
-            _window._debug_chii__?.destroy()
-        } else {
-            _window._debug_chii__.open();
+        if (domain) {
+            const script = document.createElement("script");
+            script.src = `${domain}/target.js`;
+            document.body.appendChild(script);
         }
-    }
-    if (vTimer) {
-        setTimeout(() => {
-            i = 0
-            clearTimeout(vTimer)
-            vTimer = ''
-        }, 1000)
-    }
-})
+
+    });
+
+    debugChii.on('show', function () {
+        const funcScript = document.createElement("script");
+        funcScript.textContent = `
+    const domain = localStorage.getItem("CHII_CACHE_URL") || "https://";
+    const targetInput = document.getElementById("__remote_cache_url_input_chii__")
+    if (!targetInput.value) targetInput.value = domain
+`
+        document.body.appendChild(funcScript);
+    });
 
 
-if (window.__DEV__) {
-    open()
+    debugChii.on("renderTab", (callback) => {
+        const html = template
+        callback(html)
+    });
+
+    debugChii.on("addTool", function (callback) {
+        const button = {
+            name: "确认",
+            onClick: function (event) {
+                const targetInput = document.getElementById("__remote_cache_url_input_chii__")
+                console.log(targetInput.value, 'targetInput.value')
+                localStorage.setItem("CHII_CACHE_URL", targetInput.value)
+                location.reload()
+            },
+        };
+        callback([button]);
+    });
+
+    vConsole.addPlugin(debugChii);
 }
+
+setTimeout(() => runDebug(), 500);

@@ -1,98 +1,63 @@
 // @ts-nocheck
 
 const template = `
-<style>
-  ._local_chii_container_ {
-    width: 100%;
-    gap: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #333;
-    font-size: 14px;
-  }
-  ._local_chii_container_ h1 {
-    margin-top: 70px;
-  }
-  ._local_chii_container_ ul {
-    margin-top: 30px;
-    line-height: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  ._local_chii_container_ li {
-    width: 100%;
-    text-align: start;
-  }
-  ._local_chii_container_ p {
-    background-color: #2b2d39;
-    color: #81d1e0;
-    padding: 5px 10px;
-    border-radius: 3px;
-    text-align: start;
-  }
-</style>
-<div class="_local_chii_container_">
-  <h1>打开设置面板添加本地调试URL</h1>
-  <ul>
-    <li>
-      1. 确保本地已经启动<b>chii</b>【以8080端口为例】&nbsp;
-      <p>$ chii start -p 8080</p>
-    </li>
-    <li>2. 打开 <b>打开设置面板</b> 调整本地IP地址【必须用同一网段的IP】</li>
-    <li>
-      3. 浏览器访问 <b>chii</b> 操作面板&nbsp;
-      <p>$ http://localhost:8080</p>
-    </li>
-  </ul>
+ <div
+    style="width:100%;height:300px;background:gray;display:flex;justify-content:center;align-items:center;"
+  >
+  <input
+      placeholder="添加chii代理地址"
+      style="width:200px;height:25px;padding-left:10px;"
+      type="text"
+      id="__remote_cache_url_input_chii__"
+    />
 </div>
+
 `
 
 export function runDebug() {
-  const localChii = new VConsole.VConsolePlugin("local_chii", "LocalChii");
+  const debugChii = new VConsole.VConsolePlugin("debug_chii", "DebugChii");
 
-  localChii.on("init", () => {
-    const componentContainer = document.createElement("div");
-    componentContainer.id = "__debug_remote_chii_container____";
-    document.body.appendChild(componentContainer);
-    const localUrl = localStorage.getItem("localchiiurl");
-    const localPort = localStorage.getItem("localchiiport");
+  debugChii.on("init", () => {
+    const domain = localStorage.getItem("CHII_CACHE_URL");
 
-    if (localUrl && localPort) {
-      if (!['127.0.0.1', 'localhost'].includes(localUrl)) {
-        const script = document.createElement("script");
-        script.src = `//${localUrl}:${localPort}/target.js`;
-        document.body.appendChild(script);
-      }
+    if (domain) {
+      const script = document.createElement("script");
+      script.src = `${domain}/target.js`;
+      document.body.appendChild(script);
     }
+
+  });
+
+  debugChii.on('show', function () {
+    const funcScript = document.createElement("script");
+    funcScript.textContent = `
+    const domain = localStorage.getItem("CHII_CACHE_URL") || "https://";
+    const targetInput = document.getElementById("__remote_cache_url_input_chii__")
+    if (!targetInput.value) targetInput.value = domain
+`
+    document.body.appendChild(funcScript);
   });
 
 
-  localChii.on("renderTab", (callback) => {
+  debugChii.on("renderTab", (callback) => {
     const html = template
     callback(html)
   });
 
-  localChii.on("addTool", function (callback) {
-    console.log("[debug]22:", 22)
+  debugChii.on("addTool", function (callback) {
     const button = {
-      name: "打开设置面板",
-
-
+      name: "确认",
       onClick: function (event) {
-
-        if (window._debug_chii__) {
-
-          window._debug_chii__.open();
-          vConsole.hide();
-        }
+        const targetInput = document.getElementById("__remote_cache_url_input_chii__")
+        console.log(targetInput.value, 'targetInput.value')
+        localStorage.setItem("CHII_CACHE_URL", targetInput.value)
+        location.reload()
       },
     };
     callback([button]);
   });
 
-  vConsole.addPlugin(localChii);
+  vConsole.addPlugin(debugChii);
 }
 
 setTimeout(() => runDebug(), 500);
